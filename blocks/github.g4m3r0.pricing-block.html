@@ -1,37 +1,41 @@
 {{/* Pricing Table Block */}}
+{{/* Documentation: TODO */}}
+{{/* License: TODO */}}
 
-{{/* Get variables */}}
+{{/* Initialise */}}
 {{ $page := .wcPage }}
 {{ $block := .wcBlock }}
 
-{{/* Add your block layout below */}}
-{{/* Styles can be added to the SCSS file */}}
-{{/* Access custom front matter options via $block.Params  */}}
-{{/* E.g. mytext via $block.Params.mytext */}}
-
-<h2>{{$block.Title}}</h2>
-
-<p>{{$block.Content}}</p>
-
-<div class="container">
-  <div class="row">
-    {{ range $block.Params.plans }}
-      <div class="col-md-4">
-        <div class="card text-center mb-4">
-          <div class="card-header">
-            <h3>{{ .name }}</h3>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">{{ .price }}</h4>
-            <ul class="list-group list-group-flush">
-              {{ range .features }}
-                <li class="list-group-item">{{ . }}</li>
-              {{ end }}
-            </ul>
-            <a href="{{ .button_url }}" class="btn btn-primary mt-3">{{ .button_text }}</a>
-          </div>
-        </div>
-      </div>
-    {{ end }}
+<div class="row featurette">
+  {{ with $block.content.title }}
+  <div class="col-md-12 section-heading">
+    <h1>{{ . | markdownify | emojify }}</h1>
+    {{ if $block.content.subtitle }}<p>{{ $block.content.subtitle | markdownify | emojify }}</p>{{ end }}
   </div>
+  {{ end }}
+
+  {{ with $block.content.text }}
+  <div class="col-md-12">
+    {{ . | emojify | $page.RenderString }}
+  </div>
+  {{ end }}
+
+  {{ range $block.content.items }}
+  <div class="col-12 col-sm-4">
+    <div class="card text-center">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">{{ .name | markdownify | emojify }}</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">{{ .price }}</h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          {{ range .features }}
+          <li>{{ . | markdownify | emojify }}</li>
+          {{ end }}
+        </ul>
+        <a href="{{ .button_url }}" class="btn btn-lg btn-block btn-outline-primary">{{ .button_text }}</a>
+      </div>
+    </div>
+  </div>
+  {{ end }}
 </div>
